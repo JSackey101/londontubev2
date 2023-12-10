@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 class Network:
     def __init__(self, n_nodes, adjacency_matrix):
@@ -19,3 +20,20 @@ class Network:
                     new_adjacency_matrix[i][j] = min(self.adjacency_matrix[i][j], Network2.adjacency_matrix[i][j])
         return Network(self.n_nodes, new_adjacency_matrix)
 
+    def distant_neighbours(n, v, adjacency_matrix): 
+        matrix = np.array(adjacency_matrix, dtype=int)
+        neighbours = [v]
+        index_neighbours = np.full((1,len(matrix[0])), False).flatten()
+        for i in range(n):
+            for index in neighbours:
+                row = matrix[index]
+                for j in range(len(row)):
+                    if (row[j] > 0) and (j not in list(np.where(index_neighbours == True)[0])):
+                        index_neighbours[j] = True
+            neighbours += list(set(np.where(index_neighbours == True)[0]) - set(neighbours))
+        while v in neighbours:
+            neighbours.remove(v)
+        return neighbours
+    
+
+    
