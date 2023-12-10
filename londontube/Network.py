@@ -1,5 +1,4 @@
 import numpy as np
-import time
 
 class Network:
     def __init__(self, n_nodes, adjacency_matrix):
