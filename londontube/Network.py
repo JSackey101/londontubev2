@@ -35,5 +35,48 @@ class Network:
             neighbours.remove(v)
         return neighbours
     
+    def dijkstra(start_node, dest_node, adjacency_matrix):
+        tenative_cost = list(np.full((1,len(adjacency_matrix[0])), np.inf).flatten())
+        tenative_cost[start_node] = 0
+        previous_node = [None] * len((adjacency_matrix[0]))
+        current_node = start_node
+        visited_nodes = []
+        unvisited_nodes = list(np.arange(0, len(adjacency_matrix[0])))
+        
+        tenative_cost[start_node] = 0
+        for node in range(len(previous_node)):
+            previous_node[node] = start_node
+        
+        dest_not_reached = True
+        while dest_not_reached:
+            nodes = Network.distant_neighbours(1, current_node, adjacency_matrix)
+            for node in nodes:
+                proposed_cost =  adjacency_matrix[current_node][node] + tenative_cost[current_node]
+                if proposed_cost < tenative_cost[node]:
+                    tenative_cost[node] = proposed_cost
+                    previous_node[node] = current_node
+        
 
-    
+            visited_nodes.append(current_node)
+            unvisited_nodes.remove(current_node)
+
+            if dest_node in visited_nodes:
+                dest_not_reached = False
+            elif min([tenative_cost[i] for i in unvisited_nodes]) == np.inf:
+                print("No possible paths.")
+                return None
+            else:
+                current_node = unvisited_nodes[([tenative_cost[i] for i in unvisited_nodes]).index(min(([tenative_cost[i] for i in unvisited_nodes])))]
+        path_list = []
+        current_node = dest_node
+        path_not_reconstructed = True
+        while path_not_reconstructed:
+            path_list.append(current_node)
+            if previous_node[current_node] == start_node:
+                path_list.append(start_node)
+                path_list.reverse() 
+                path_not_reconstructed = False
+            else:
+                current_node = previous_node[current_node]
+        
+        return path_list
