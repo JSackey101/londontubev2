@@ -152,14 +152,11 @@ def real_time_network(date):
                 else:
                     station = disruptions[j][1]
                     # A delay to all journeys through the station
+                    delay = disruptions[j][2]
                     line_network.adjacency_matrix[station, :] *= delay
                     line_network.adjacency_matrix[:, station] *= delay
         # Add real time line networks together
         real_time_network += line_network        
     return real_time_network
 
-# def print_matrix(matrix):
-#     # Print the matrix in a readable format
-#     for row in matrix:
-#         print(row)
 
