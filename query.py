@@ -30,7 +30,7 @@ def query_line_connections(line_identifier):
             adjacency[station1_index, station2_index] = travel_time
             adjacency[station2_index, station1_index] = travel_time
         
-        return Network(296, adjacency)
+        return Network(len(adjacency), adjacency)
 
     else:
         print(f"Error: Unable to fetch line connections for {line_identifier}.")
@@ -129,8 +129,37 @@ def parse_disruptions_data(disruptions_data):
 
     return disruptions_matrix
 
-def print_matrix(matrix):
-    # Print the matrix in a readable format
-    for row in matrix:
-        print(row)
+def real_time_network(date):
+    disruptions = query_disruptions(date)
+    # Init network
+    adjacency = np.zeros((296,296))
+    real_time_network = Network(296, adjacency)
+    for i in range(12):
+        # Network of a particular line
+        line_network = query_line_connections(i)
+        for j in range(len(disruptions)):
+            # For single line
+            # Disruption format [[line_idx [station1 station2] delay] x n].
+            if disruptions[j][0] == i:
+                # Disruption between two stations
+                if len(disruptions[j][1]) == 2:
+                    station1 = disruptions[j][1][0]
+                    station2 = disruptions[j][1][1]
+                    delay = disruptions[j][2]
+                    # A delay to the direct connection between two stations
+                    line_network.adjacency_matrix[station1,station2] *= delay
+                # Disruption for 1 station
+                else:
+                    station = disruptions[j][1]
+                    # A delay to all journeys through the station
+                    line_network.adjacency_matrix[station, :] *= delay
+                    line_network.adjacency_matrix[:, station] *= delay
+        # Add real time line networks together
+        real_time_network += line_network        
+    return real_time_network
+
+# def print_matrix(matrix):
+#     # Print the matrix in a readable format
+#     for row in matrix:
+#         print(row)
 
