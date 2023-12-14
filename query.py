@@ -55,7 +55,7 @@ def query_station_information(ids):
         station_info_matrix = parse_station_data(csv_data)
 
         # Print the station information matrix
-        print_matrix(station_info_matrix)
+        return station_info_matrix
     else:
         print(f"Error: Unable to fetch station information for {ids}.")
 
