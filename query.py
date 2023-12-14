@@ -111,7 +111,7 @@ def query_disruptions(date_str=None):
         disruptions_matrix = parse_disruptions_data(disruptions_data)
 
         # Print the disruptions matrix
-        print_matrix(disruptions_matrix)
+        return disruptions_matrix
     else:
         print(f"Error: Unable to fetch disruption information for {date_str}.")
 
