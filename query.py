@@ -38,9 +38,6 @@ def query_line_connections(line_identifier):
 
 
 def query_station_information(ids):
-    # Set the default ids to "0" if not specified
-    ids = ids or "0"
-
     # If a single id is provided as a string, convert it to a list
     if isinstance(ids, str):
         ids = [ids]
