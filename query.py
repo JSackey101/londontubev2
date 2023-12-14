@@ -2,6 +2,8 @@ import requests
 from datetime import date
 import csv
 from io import StringIO
+import numpy as np
+from Network import Network
 
 
 
@@ -14,24 +16,22 @@ def query_line_connections(line_identifier):
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/line/query?line_identifier={line_identifier}"
     response = requests.get(url)
 
+    # init a adjacency matrix
+    adjacency = np.zeros((296,296))
+
     if response.status_code == 200:
         # Parse CSV data from the response
         csv_data = StringIO(response.text)
         reader = csv.reader(csv_data)
 
-        # Process each row in the CSV data
-        connections = []
+        # Process each row in the CSV data  
         for row in reader:
             station1_index, station2_index, travel_time = map(int, row)
-            connections.append((station1_index, station2_index, travel_time))
-            # Print information about the resulting connections
-        if connections:
-            print(f"Connections for the {line_identifier} line:")
-            for connection in connections:
-                print(connection)
-            print()
-        else:
-            print(f"No connections found for the {line_identifier} line.")
+            adjacency[station1_index, station2_index] = travel_time
+            adjacency[station2_index, station1_index] = travel_time
+        
+        return Network(296, adjacency)
+
     else:
         print(f"Error: Unable to fetch line connections for {line_identifier}.")
         return None
@@ -46,7 +46,7 @@ def query_station_information(ids):
         ids = [ids]
 
     # Make a request to the web service to get station information
-    url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={','.join(ids)}"
+    url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={ids}"
     response = requests.get(url)
 
     if response.status_code == 200:
