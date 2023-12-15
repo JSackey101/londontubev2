@@ -2,7 +2,7 @@ import argparse
 import query
 from Network import Network
 import matplotlib.pyplot as plt
-import datetime
+from datetime import date
 
 def plan_journey(start, dest, date):
     if type(start) == str:
@@ -62,11 +62,10 @@ def journey_planner(args):
     print("Start Station:", args.start)
     print("Destination Station:", args.dest)
     print("Setoff Date:", args.setoff_date)
-    date = str(args.setoff_date)
     # The journey planner logic
     # When the journey is impossible - given the disruption information.
     # Should return the planned journey, and the time it will take, to the terminal in a human-readable format.
-    journey, duration = plan_journey(args.start, args.dest, date)
+    journey, duration = plan_journey(args.start, args.dest, args.setoff_date)
     print("Journey will take", duration, "minutes.")
     for i in range(len(journey)):
         station_info = query.query_station_information(journey[i])
@@ -82,10 +81,9 @@ def journey_planner(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Journey Planner Tool")
+    parser.add_argument("--plot", action="store_true", help="Generate and save a plot of the journey")
     parser.add_argument("start", type=str, help="Start station index or name")
     parser.add_argument("dest", type=str, help="Destination station index or name")
-    parser.add_argument("--setoff-date", type=str, help="Setoff date in YYYY-MM-DD format (optional)")
-    parser.add_argument("--plot", action="store_true", help="Generate and save a plot of the journey")
-    
+    parser.add_argument("setoff_date", nargs='?', default=str(date.today()), type=str, help="Setoff date in YYYY-MM-DD format (optional)")
     args = parser.parse_args()
     journey_planner(args)
