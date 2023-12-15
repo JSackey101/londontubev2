@@ -9,14 +9,20 @@ from Network import Network
 
 
 def query_line_connections(line_identifier):
-    # Set the default line_identifier to 0 (Bakerloo) if not specified
-    line_identifier = line_identifier or "0"
+    """This function takes the line identifier, quering the web service 
+    for information about the connectivity of a particular line, and
+    returns a Network object that represents that line.
+    Arg:
+        line_identifier (int): The ID for a particular line in London tube network
+    Return:
+        line_network (Network): A network object of the line, i.e. a sub-network of London tube
+    """
 
     # Make a request to the web service to get line connections
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/line/query?line_identifier={line_identifier}"
     response = requests.get(url)
 
-    # init a adjacency matrix
+    # Init a adjacency matrix with 296x296 (296 stations in London tube network)
     adjacency = np.zeros((296,296))
 
     if response.status_code == 200:
@@ -26,12 +32,14 @@ def query_line_connections(line_identifier):
 
         # Process each row in the CSV data  
         for row in reader:
-            station1_index, station2_index, travel_time = map(int, row)
+            station1_index, station2_index, travel_time = map(int, row)           
+            # Fill the matrix by using station index
             adjacency[station1_index, station2_index] = travel_time
             adjacency[station2_index, station1_index] = travel_time
         
-        return Network(len(adjacency), adjacency)
-
+        # Create a Network object for the line
+        line_network = Network(len(adjacency), adjacency)
+        return line_network
     else:
         print(f"Error: Unable to fetch line connections for {line_identifier}.")
         return None
