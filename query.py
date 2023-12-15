@@ -179,6 +179,12 @@ def parse_disruptions_data(disruptions_data):
     return disruptions_ls
 
 def real_time_network(date):
+    """This function takes a date and return the real-time London tube network on that day.
+    Arg:
+        date (str): A date in 2023. eg."2023-12-15"
+    Return:
+        real_time_network (Network): A Network object that represents the London tube network on a particular date.
+    """
     disruptions = query_disruptions(date)
     # Init network
     adjacency = np.zeros((296,296))
