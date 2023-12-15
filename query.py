@@ -90,6 +90,13 @@ def query_station_num(station_name):
         print(f"Error: Unable to fetch station information for {station_name}.")
 
 def parse_station_data(csv_data):
+    """This function converts the csv data of station information to a list.
+    Arg:
+        csv_data: Station information data obtained from web service.
+    Return:
+        station_info_matrix (list): Information with order [[name, ID, latitude, longitude]...]
+    """
+
     # Parse the CSV data and return station information as a matrix-like structure
     station_info_matrix = []
 
@@ -138,6 +145,7 @@ def query_disruptions(date_str=None):
 
     if response.status_code == 200:
         disruptions_data = response.json()
+        print(disruptions_data)
         disruptions_matrix = parse_disruptions_data(disruptions_data)
 
         # Print the disruptions matrix
@@ -146,6 +154,12 @@ def query_disruptions(date_str=None):
         print(f"Error: Unable to fetch disruption information for {date_str}.")
 
 def parse_disruptions_data(disruptions_data):
+    """This function converts the service disruptions to a list.
+    Arg:
+        disruptions_data (dict.): Station information data obtained from web service.
+    Return:
+        disruptions_matrix (list): Information with order [[line, [station1, station2], delay] [None(all the lines), [station], delay]...]
+    """
     # Parse the disruption data and return it as a matrix-like structure
     disruptions_matrix = []
 
