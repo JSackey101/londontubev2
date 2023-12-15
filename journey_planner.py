@@ -79,14 +79,12 @@ def plot_journey(journey, save=False) -> None:
 
 
 def journey_planner(args):
-    # Need to fill
+    """
+    This function takes arguments from parser(--plot(optional) start dest setoff_date(optional, defalt is today)), 
+    and visulize the journey information.
+    """
 
-    print("Start Station:", args.start)
-    print("Destination Station:", args.dest)
-    print("Setoff Date:", args.setoff_date)
-    # The journey planner logic
-    # When the journey is impossible - given the disruption information.
-    # Should return the planned journey, and the time it will take, to the terminal in a human-readable format.
+    print("Date:", args.setoff_date)
     journey, duration = plan_journey(args.start, args.dest, args.setoff_date)
     print("Journey will take", duration, "minutes.")
     for i in range(len(journey)):
