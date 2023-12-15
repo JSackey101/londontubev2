@@ -30,23 +30,32 @@ def plan_journey(start, dest, date):
     return journey, duration
 
 def plot_journey(journey, save=False) -> None:
+    """This function takes the path of journey and plot a figure to visulize it.
+    Args:
+        journey (list): IDs of passing stations.
+        save (bool): If it is ture, the figure will be saved.
+    """
+    # Obtain all stations' information.
     stations_info = query.query_station_information("all")
+
+    # Lists for lats and lons of the stations in London tube network
     network_lats = []
     network_lons = []
     for i in range(296):
         network_lats.append(stations_info[i][2])
         network_lons.append(stations_info[i][3])
-
+    
+    # Plot all the stations 
     fig, ax = plt.subplots(figsize=(7, 5))
     ax.scatter(network_lons, network_lats, s=1, c="blue", marker="x")
     ax.set_xlabel("Longitude")
     ax.set_ylabel("Latitude")
-
+    
+    # Title of the plot
     start_info = query.query_station_information(journey[0])
     dest_info = query.query_station_information(journey[-1])
     start_name = start_info[0][0]
     dest_name = dest_info[0][0]
-    plot_title = f"Journey from {start_name} to {dest_name}"
     ax.set_title(f"Journey from {start_name} to {dest_name}")
 
     # Draw over the network with the journey
@@ -58,6 +67,7 @@ def plot_journey(journey, save=False) -> None:
         journey_lons.append(stations_info[station_num][3])
     ax.plot(journey_lons, journey_lats, "ro-", markersize=2)
     
+    # Save the figure if necessary
     if save:
         plot_filename = f"journey_from_{start_name.replace(' ', '_')}_to_{dest_name.replace(' ', '_')}.png"
         plt.savefig(plot_filename)
