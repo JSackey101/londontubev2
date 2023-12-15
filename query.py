@@ -38,10 +38,6 @@ def query_line_connections(line_identifier):
 
 
 def query_station_information(ids):
-    # If a single id is provided as a string, convert it to a list
-    if isinstance(ids, str):
-        ids = [ids]
-
     # Make a request to the web service to get station information
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={ids}"
     response = requests.get(url)
