@@ -122,6 +122,12 @@ def parse_station_data(csv_data):
 
 
 def query_disruptions(date_str=None):
+    """This function takes a date and query the web service for service disruptions.
+    Arg:
+        date_str (str): A date in 2023. eg."2023-12-15"
+    Return:
+        disruptions (list): Disruptions with order [[line, [station1, station2], delay] [None(all the lines), [station], delay]...]
+    """
     # Set the default date to the present day if not provided
     if date_str is None:
         date_str = str(date.today())
@@ -145,11 +151,10 @@ def query_disruptions(date_str=None):
 
     if response.status_code == 200:
         disruptions_data = response.json()
-        print(disruptions_data)
-        disruptions_matrix = parse_disruptions_data(disruptions_data)
+        disruptions = parse_disruptions_data(disruptions_data)
 
         # Print the disruptions matrix
-        return disruptions_matrix
+        return disruptions
     else:
         print(f"Error: Unable to fetch disruption information for {date_str}.")
 
@@ -158,10 +163,10 @@ def parse_disruptions_data(disruptions_data):
     Arg:
         disruptions_data (dict.): Station information data obtained from web service.
     Return:
-        disruptions_matrix (list): Information with order [[line, [station1, station2], delay] [None(all the lines), [station], delay]...]
+        disruptions_ls (list): Disruptions with order [[line, [station1, station2], delay] [None(all the lines), [station], delay]...]
     """
     # Parse the disruption data and return it as a matrix-like structure
-    disruptions_matrix = []
+    disruptions_ls = []
 
     for event in disruptions_data:
         disruption = [
@@ -169,9 +174,9 @@ def parse_disruptions_data(disruptions_data):
             event.get("stations", []),
             event.get("delay", 0)
         ]
-        disruptions_matrix.append(disruption)
+        disruptions_ls.append(disruption)
 
-    return disruptions_matrix
+    return disruptions_ls
 
 def real_time_network(date):
     disruptions = query_disruptions(date)
