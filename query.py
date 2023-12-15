@@ -9,9 +9,9 @@ from Network import Network
 
 
 def query_line_connections(line_identifier):
-    """This function takes the line identifier, quering the web service 
-    for information about the connectivity of a particular line, and
-    returns a Network object that represents that line.
+    """This function takes the line identifier, quering the web service for information 
+    about the connectivity of a particular line, and returns a Network object 
+    that represents that line.
     Arg:
         line_identifier (int): The ID for a particular line in London tube network
     Return:
@@ -46,6 +46,13 @@ def query_line_connections(line_identifier):
 
 
 def query_station_information(ids):
+    """This function takes the station ID and query the web service for station information
+    Arg:
+        ids (int, str): The ID for station/stations in London tube network. eg. 1 (int); "all" (str); "1, 3, 7" (str)
+    Return:
+        station_info_matrix (list): Information with order [[name, ID, latitude, longitude]...]
+    """
+
     # Make a request to the web service to get station information
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={ids}"
     response = requests.get(url)
@@ -55,7 +62,6 @@ def query_station_information(ids):
         csv_data = response.text.strip()
         station_info_matrix = parse_station_data(csv_data)
 
-        # Print the station information matrix
         return station_info_matrix
     else:
         print(f"Error: Unable to fetch station information for {ids}.")
