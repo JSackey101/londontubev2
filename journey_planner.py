@@ -5,6 +5,16 @@ import matplotlib.pyplot as plt
 from datetime import date
 
 def plan_journey(start, dest, date):
+    """This funciton takes start, destination and date, and return the path and duration of the journey.
+    Args:
+        start (int, str): The ID or name of the start station.
+        dest (int, str): The ID or name of destination station.
+        date (str): The date of the journey
+    Returns:
+        journey (list): A list that includes the IDs of passing stations, with order.
+        duration (float): The time spent.
+    """
+    # If start or dest is a str, then convert it to station ID
     if type(start) == str:
         start_int = query.query_station_num(start)
     else:
@@ -13,7 +23,9 @@ def plan_journey(start, dest, date):
         dest_int = query.query_station_num(dest)
     else:
         dest_int = dest
+    # The london tube network of given date
     tube_network = query.real_time_network(date)
+    # Apply dij to obtain the path and time
     journey, duration = Network.dijkstra(start_int, dest_int, tube_network.adjacency_matrix)
     return journey, duration
 
