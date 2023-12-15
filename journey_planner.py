@@ -1,6 +1,8 @@
 import argparse
 import query
 from Network import Network
+import matplotlib.pyplot as plt
+import datetime
 
 def plan_journey(start, dest, date):
     if type(start) == str:
@@ -14,6 +16,45 @@ def plan_journey(start, dest, date):
     tube_network = query.real_time_network(date)
     journey, duration = Network.dijkstra(start_int, dest_int, tube_network.adjacency_matrix)
     return journey, duration
+
+def plot_journey(journey, save=False) -> None:
+    stations_info = query.query_station_information("all")
+    network_lats = []
+    network_lons = []
+    for i in range(296):
+        network_lats.append(stations_info[i][2])
+        network_lons.append(stations_info[i][3])
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.scatter(network_lons, network_lats, s=1, c="blue", marker="x")
+    ax.set_xlabel("Longitude")
+    ax.set_ylabel("Latitude")
+
+    start_info = query.query_station_information(journey[0])
+    dest_info = query.query_station_information(journey[-1])
+    start_name = start_info[0][0]
+    dest_name = dest_info[0][0]
+    plot_title = f"Journey from {start_name} to {dest_name}"
+    ax.set_title(f"Journey from {start_name} to {dest_name}")
+
+    # Draw over the network with the journey
+    journey_lats = []
+    journey_lons = []
+    for i in range(len(journey)):
+        station_num = journey[i]
+        journey_lats.append(stations_info[station_num][2])
+        journey_lons.append(stations_info[station_num][3])
+    ax.plot(journey_lons, journey_lats, "ro-", markersize=2)
+    
+    if save:
+        plot_filename = f"journey_from_{start_name.replace(' ', '_')}_to_{dest_name.replace(' ', '_')}.png"
+        plt.savefig(plot_filename)
+        print(f"Plot saved to {plot_filename}")
+        plt.show()
+    else:
+        plt.show()
+    return
+
 
 def journey_planner(args):
     # Need to fill
@@ -37,10 +78,7 @@ def journey_planner(args):
             print(station_info[0][0])
 
     # Plot
-    if args.plot:
-        plot_filename = f"journey_from_{args.start.replace(' ', '_')}_to_{args.destination.replace(' ', '_')}.png"
-        plt.savefig(plot_filename)
-        print(f"Plot saved to {plot_filename}")
+    plot_journey(journey, args.plot)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Journey Planner Tool")
