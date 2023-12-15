@@ -66,20 +66,28 @@ def query_station_information(ids):
     else:
         print(f"Error: Unable to fetch station information for {ids}.")
 
-def query_station_num(str):
+def query_station_num(station_name):
+    """This function takes the name of a station and return its station ID.
+    Arg:
+        station_name (str): The name of station. eg."Warren street"
+    Return:
+        station_id (int): The ID of given station.
+    """
+
     # Make a request to the web service to get station information
-    url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={str}"
+    url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={station_name}"
     response = requests.get(url)
 
     if response.status_code == 200:
         # Parse the CSV response
         csv_data = response.text.strip()
         station_info_matrix = parse_station_data(csv_data)
+        station_id = station_info_matrix[0][1]
 
-        # Print the station number
-        return station_info_matrix[0][1]
+        # return the station id number
+        return station_id
     else:
-        print(f"Error: Unable to fetch station information for {str}.")
+        print(f"Error: Unable to fetch station information for {station_name}.")
 
 def parse_station_data(csv_data):
     # Parse the CSV data and return station information as a matrix-like structure
