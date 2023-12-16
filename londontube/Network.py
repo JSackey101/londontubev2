@@ -37,15 +37,15 @@ class Network:
 
     def distant_neighbours(n, v, adjacency_matrix): 
         """
-       This function takes the n, v and the adjacency_matrix
-       to compute the n-distance neighours of a particular node..
+        This function takes the n, v and the adjacency_matrix
+        to compute the n-distance neighours of a particular node..
 
-       Parameters:
+        Parameters:
         n (int): The desired distance from the given node.
         v (int): The index of the node for which neighbors to be found.
         adjacency_matrix: The adjacency matrix representing the graph.
 
-       Returns:
+        Returns:
         list: A list containing the indices of nodes that are at a distance of n from the given node v.
         """
         matrix = np.array(adjacency_matrix, dtype=int)
