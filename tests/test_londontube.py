@@ -53,3 +53,22 @@ def test_adding_adjacency_matrix():
     ])
     result = Network1 + Network2
     assert np.array_equal(result.adjacency_matrix, expected.adjacency_matrix)
+
+def test_incompatible_networks():
+    Matrix1 = [
+        [0, 1, 0, 0],
+        [1, 0, 2, 0],
+        [0, 2, 0, 0],
+        [0, 0, 0, 0]
+    ]
+    Matrix2 = [
+        [0, 0, 0, 3, 0],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0],
+        [3, 1, 0, 0, 0],
+        [1, 0, 0, 1, 2]
+    ]
+    Network1 = Network(4, Matrix1)
+    Network2 = Network(5, Matrix2)
+    with pytest.raises(ValueError, match="The two objects have different numbers of nodes"):
+        result = Network1 + Network2
