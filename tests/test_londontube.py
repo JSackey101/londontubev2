@@ -72,3 +72,19 @@ def test_incompatible_networks():
     Network2 = Network(5, Matrix2)
     with pytest.raises(ValueError, match="The two objects have different numbers of nodes"):
         result = Network1 + Network2
+
+def test_distant_neighbours():
+    A = [
+        [0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 1, 1, 0, 0, 1, 1, 0, 0],
+        [0, 0, 0, 1, 1, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 1, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 1, 1, 0],
+    ]
+    expected = [1, 2, 5, 6]
+    result = Network.distant_neighbours(1, 4, A)
+    assert result == expected
