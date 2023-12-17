@@ -3,19 +3,27 @@ from datetime import date
 import csv
 from io import StringIO
 import numpy as np
-import time
-from distant_neighbours import distant_neighbours as distant_neighbours_provided
-import matplotlib.pyplot as plt
 from Network import Network
-
+import time
+import matplotlib.pyplot as plt
+from distant_neighbours import distant_neighbours as distant_neighbours_provided
 
 def query_line_connections(line_identifier):
-    # Set the default line_identifier to 0 (Bakerloo) if not specified
-    line_identifier = line_identifier or "0"
+    """This function takes the line identifier, quering the web service for information
+    about the connectivity of a particular line, and returns a Network object
+    that represents that line.
+    Arg:
+        line_identifier (int): The ID for a particular line in London tube network
+    Return:
+        line_network (Network): A network object of the line, i.e. a sub-network of London tube
+    """
 
     # Make a request to the web service to get line connections
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/line/query?line_identifier={line_identifier}"
     response = requests.get(url)
+
+    # Init a adjacency matrix with 296x296 (296 stations in London tube network)
+    adjacency = np.zeros((296, 296))
 
     if response.status_code == 200:
         # Parse CSV data from the response
@@ -23,27 +31,30 @@ def query_line_connections(line_identifier):
         reader = csv.reader(csv_data)
 
         # Process each row in the CSV data
-        connections = []
         for row in reader:
             station1_index, station2_index, travel_time = map(int, row)
-            connections.append((station1_index, station2_index, travel_time))
+            # Fill the matrix by using station index
+            adjacency[station1_index, station2_index] = travel_time
+            adjacency[station2_index, station1_index] = travel_time
 
-        return connections
+        # Create a Network object for the line
+        line_network = Network(len(adjacency), adjacency)
+        return line_network
     else:
         print(f"Error: Unable to fetch line connections for {line_identifier}.")
-        return []
+        return None
 
 
 def query_station_information(ids):
-    # Set the default ids to "0" if not specified
-    ids = ids or "0"
-
-    # If a single id is provided as a string, convert it to a list
-    if isinstance(ids, str):
-        ids = [ids]
+    """This function takes the station ID and query the web service for station information
+    Arg:
+        ids (int, str): The ID for station/stations in London tube network. eg. 1 (int); "all" (str); "1, 3, 7" (str)
+    Return:
+        station_info_matrix (list): Information with order [[name, ID, latitude, longitude]...]
+    """
 
     # Make a request to the web service to get station information
-    url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={','.join(ids)}"
+    url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={ids}"
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -51,13 +62,43 @@ def query_station_information(ids):
         csv_data = response.text.strip()
         station_info_matrix = parse_station_data(csv_data)
 
-        # Print the station information matrix
         return station_info_matrix
     else:
         print(f"Error: Unable to fetch station information for {ids}.")
-        return []
+
+
+def query_station_num(station_name):
+    """This function takes the name of a station and return its station ID.
+    Arg:
+        station_name (str): The name of station. eg."Warren street"
+    Return:
+        station_id (int): The ID of given station.
+    """
+
+    # Make a request to the web service to get station information
+    url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={station_name}"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        # Parse the CSV response
+        csv_data = response.text.strip()
+        station_info_matrix = parse_station_data(csv_data)
+        station_id = station_info_matrix[0][1]
+
+        # return the station id number
+        return station_id
+    else:
+        print(f"Error: Unable to fetch station information for {station_name}.")
+
 
 def parse_station_data(csv_data):
+    """This function converts the csv data of station information to a list.
+    Arg:
+        csv_data: Station information data obtained from web service.
+    Return:
+        station_info_matrix (list): Information with order [[name, ID, latitude, longitude]...]
+    """
+
     # Parse the CSV data and return station information as a matrix-like structure
     station_info_matrix = []
 
@@ -69,21 +110,26 @@ def parse_station_data(csv_data):
 
     for row in csv_reader:
         station_info = [
-            int(row["station index"]),
             row["station name"],
+            int(row["station index"]),
             float(row["latitude"]),
             float(row["longitude"])
         ]
         station_info_matrix.append(station_info)
 
     # Sort station information by station index
-    station_info_matrix.sort(key=lambda x: x[0])
+    station_info_matrix.sort(key=lambda x: x[1])
 
     return station_info_matrix
 
 
-
 def query_disruptions(date_str=None):
+    """This function takes a date and query the web service for service disruptions.
+    Arg:
+        date_str (str): A date in 2023. eg."2023-12-15"
+    Return:
+        disruptions (list): Disruptions with order [[line, [station1, station2], delay] [None(all the lines), [station], delay]...]
+    """
     # Set the default date to the present day if not provided
     if date_str is None:
         date_str = str(date.today())
@@ -107,17 +153,23 @@ def query_disruptions(date_str=None):
 
     if response.status_code == 200:
         disruptions_data = response.json()
-        disruptions_matrix = parse_disruptions_data(disruptions_data)
+        disruptions = parse_disruptions_data(disruptions_data)
 
         # Print the disruptions matrix
-        print_matrix(disruptions_matrix)
+        return disruptions
     else:
         print(f"Error: Unable to fetch disruption information for {date_str}.")
 
 
 def parse_disruptions_data(disruptions_data):
+    """This function converts the service disruptions to a list.
+    Arg:
+        disruptions_data (dict.): Station information data obtained from web service.
+    Return:
+        disruptions_ls (list): Disruptions with order [[line, [station1, station2], delay] [None(all the lines), [station], delay]...]
+    """
     # Parse the disruption data and return it as a matrix-like structure
-    disruptions_matrix = []
+    disruptions_ls = []
 
     for event in disruptions_data:
         disruption = [
@@ -125,22 +177,73 @@ def parse_disruptions_data(disruptions_data):
             event.get("stations", []),
             event.get("delay", 0)
         ]
-        disruptions_matrix.append(disruption)
+        disruptions_ls.append(disruption)
 
-    return disruptions_matrix
-
-
-def print_matrix(matrix):
-    # Print the matrix in a readable format
-    for row in matrix:
-        print(row)
+    return disruptions_ls
 
 
+def real_time_network(date):
+    """This function takes a date and return the real-time London tube network on that day.
+    Arg:
+        date (str): A date in 2023. eg."2023-12-15"
+    Return:
+        real_time_network (Network): A Network object that represents the London tube network on a particular date.
+    """
+    disruptions = query_disruptions(date)
+    # Init network
+    adjacency = np.zeros((296, 296))
+    real_time_network = Network(296, adjacency)
+    for i in range(12):
+        # Network of a particular line
+        line_network = query_line_connections(i)
+        for j in range(len(disruptions)):
+            # For single line
+            # Disruption format [[line_idx [station1 station2] delay] x n].
+            if disruptions[j][0] == i:
+                # Disruption between two stations
+                if len(disruptions[j][1]) == 2:
+                    station1 = disruptions[j][1][0]
+                    station2 = disruptions[j][1][1]
+                    delay = disruptions[j][2]
+                    # A delay to the direct connection between two stations
+                    line_network.adjacency_matrix[station1, station2] *= delay
+                # Disruption for 1 station
+                else:
+                    station = disruptions[j][1]
+                    # A delay to all journeys through the station
+                    delay = disruptions[j][2]
+                    line_network.adjacency_matrix[station, :] *= delay
+                    line_network.adjacency_matrix[:, station] *= delay
+        # Add real timeline networks together
+        real_time_network += line_network
+    return real_time_network
+
+
+"""
+ Perform various tasks related to London Tube network analysis and benchmarking.
+
+1. Obtains station connections and creates a weight matrix:
+   - `station_list` is populated by querying line connections and extracting station connections.
+   - A `weight_matrix` is constructed from the station connections.
+
+2. Benchmarking of network methods:
+   - Benchmarking is done for two methods (`Network.distant_neighbours` and a provided method) with varying parameters.
+   - Execution times are measured for different 'n' and 'v' values, and average times are calculated.
+   - The results are plotted on a log-scale graph.
+
+3. Table output:
+   - Tables are generated to display the average execution times for each method based on 'n' and 'v' values.
+"""
+
+# Obtain station connections and create a weight matrix
 station_list = []
 for i in range(12):
     connections_matrix = query_line_connections(i)
-    for information in connections_matrix:
-        station_list.append(information)
+    for i in range(connections_matrix.n_nodes):
+        for j in range(connections_matrix.n_nodes):
+            weight = connections_matrix.adjacency_matrix[i, j]
+            if weight > 0:
+                station_list.append((i, j, weight))
 
 weight_matrix = np.zeros((296, 296))
 for stations in station_list:
@@ -148,23 +251,16 @@ for stations in station_list:
     weight_matrix[i][j] = k
     weight_matrix[j][i] = k
 
-# List of n_values
+# Benchmarking with varying 'n' and 'v' values
 n_values = [1, 2, 3, 4, 5, 7, 8, 10, 12, 14, 17, 20, 25, 29, 35, 42, 51, 61, 73, 87, 104, 125, 149, 179, 214, 256]
-
-# List of station_id values
 v_values = [10, 24, 56, 73, 83, 94, 144, 168, 265]
 
-# Lists to store average times
 average_time_network = []
 average_time_provided = []
 
-
-# Iterate through n_values and v_values
 for n_value in n_values:
-    # Lists to store individual times for each method
     times_network = []
     times_provided = []
-
 
     for v_value in v_values:
         # Measure execution time for Network.distant_neighbours
@@ -179,11 +275,8 @@ for n_value in n_values:
         elapsed_time_provided = time.time() - start_time_provided
         times_provided.append(elapsed_time_provided)
 
-
-    # Calculate average times for each method
     average_time_network.append(sum(times_network) / len(times_network))
     average_time_provided.append(sum(times_provided) / len(times_provided))
-
 
 # Plotting with log axes
 plt.semilogy(n_values, average_time_network, label='Network.distant_neighbours')
@@ -194,50 +287,38 @@ plt.legend()
 plt.title('Average Execution Time vs. n')
 plt.show()
 
-# 创建表头
+# Table output
 table_header = "{:<3} {:<30} {:<30}"
 table_separator = "-" * 65
-
-# 存储所有表格的表头和表格内容
 all_tables = []
 
-# Iterate through v_values
 for v_value_index, v_value in enumerate(v_values):
-    # 存储当前 v_value 对应的表格
-    current_table = [table_header.format("𝑛", "Network.distant_neighbours (secs)", "Provided method (secs)"),
+    current_table = [table_header.format("", "Network.distant_neighbours (secs)", "Provided method (secs)"),
                      table_separator]
 
-
-    # Iterate through n_values
     for n_value_index, n_value in enumerate(n_values):
-        # Lists to store individual times for each method
         times_network = []
         times_provided = []
 
-        for _ in range(3):  # 重复三次，获取三次数据
-            # Measure execution time for Network.distant_neighbours
+        for _ in range(3):  # repeating 3 times to get the average data
             start_time_network = time.time()
             Network.distant_neighbours(n_value, v_value, weight_matrix)
             elapsed_time_network = time.time() - start_time_network
             times_network.append(elapsed_time_network)
 
-            # Measure execution time for the provided method
             start_time_provided = time.time()
             result = distant_neighbours_provided(n_value, v_value, weight_matrix)
             elapsed_time_provided = time.time() - start_time_provided
             times_provided.append(elapsed_time_provided)
 
-        # 取三次数据的平均值
         avg_elapsed_time_network = sum(times_network) / len(times_network)
         avg_elapsed_time_provided = sum(times_provided) / len(times_provided)
 
-        # 添加每个 n_value 的执行时间到当前表格
         current_table.append(f"{n_value:<3} {avg_elapsed_time_network:^30.6f} {avg_elapsed_time_provided:^30.6f}")
 
-    # 添加当前表格到所有表格列表中
     all_tables.append(current_table)
 
-# 输出所有表格
+# Output all tables
 for table in all_tables:
     for line in table:
         print(line)
