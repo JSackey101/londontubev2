@@ -195,7 +195,7 @@ def real_time_network(date):
         for j in range(len(disruptions)):
             # For single line
             # Disruption format [[line_idx [station1 station2] delay] x n].
-            if disruptions[j][0] == i:
+            if disruptions[j][0] == i or disruptions[j][0] is None:
                 # Disruption between two stations
                 if len(disruptions[j][1]) == 2:
                     station1 = disruptions[j][1][0]
