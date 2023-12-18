@@ -17,6 +17,17 @@ def query_line_connections(line_identifier):
     Return:
         line_network (Network): A network object of the line, i.e. a sub-network of London tube
     """
+    # Check input type
+    if not isinstance(line_identifier, int):
+        raise TypeError("The line identifier must be an integer.")
+    if not 0 <= line_identifier <= 11:
+        raise ValueError("Line ID must be in the range 0 to 11")
+    
+    # Check internet connection
+    try:
+        requests.get("https://www.google.com", timeout=5)
+    except requests.ConnectionError:
+        raise ConnectionError("No internet connection. Please check your network.")
 
     # Make a request to the web service to get line connections
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/line/query?line_identifier={line_identifier}"
@@ -41,8 +52,8 @@ def query_line_connections(line_identifier):
         line_network = Network(len(adjacency), adjacency)
         return line_network
     else:
-        print(f"Error: Unable to fetch line connections for {line_identifier}.")
-        return None
+        # No informaiton for given line 
+        raise ValueError(f"Error: Unable to fetch line connections for {line_identifier}.")
 
 
 def query_station_information(ids):
@@ -52,7 +63,22 @@ def query_station_information(ids):
     Return:
         station_info_matrix (list): Information with order [[name, ID, latitude, longitude]...]
     """
-
+    # Check input type
+    if not isinstance(ids, (int, str)):
+        raise TypeError("The station must be an integer or string.")
+    
+    # Check input value
+    if isinstance(ids, int):
+        # 296 stations in total. Index from 0 to 195
+        if not 0 <= ids <= 295:
+            raise ValueError("Line ID must be in the range 0 to 295")
+    
+    # Check internet connction
+    try:
+        requests.get("https://www.google.com", timeout=5)
+    except requests.ConnectionError:
+        raise ConnectionError("No internet connection. Please check your network.")
+    
     # Make a request to the web service to get station information
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={ids}"
     response = requests.get(url)
@@ -64,7 +90,8 @@ def query_station_information(ids):
 
         return station_info_matrix
     else:
-        print(f"Error: Unable to fetch station information for {ids}.")
+        # No informaiton for given station
+        raise ValueError(f"Error: Unable to fetch station information for {ids}.")
 
 def query_station_num(station_name):
     """This function takes the name of a station and return its station ID.
@@ -73,7 +100,16 @@ def query_station_num(station_name):
     Return:
         station_id (int): The ID of given station.
     """
-
+    # Check input type
+    if not isinstance(station_name, str):
+        raise TypeError("The station name must be an string.")
+    
+    # Check internet connection
+    try:
+        requests.get("https://www.google.com", timeout=5)
+    except requests.ConnectionError:
+        raise ConnectionError("No internet connection. Please check your network.")
+    
     # Make a request to the web service to get station information
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id={station_name}"
     response = requests.get(url)
@@ -87,7 +123,8 @@ def query_station_num(station_name):
         # return the station id number
         return station_id
     else:
-        print(f"Error: Unable to fetch station information for {station_name}.")
+        # No informaiton for given station name
+        raise ValueError(f"Error: Unable to fetch station information for {station_name}.")
 
 def parse_station_data(csv_data):
     """This function converts the csv data of station information to a list.
@@ -144,6 +181,12 @@ def query_disruptions(date_str=None):
         except ValueError:
             print("Error: Invalid date format. Using the present day.")
             date_str = str(date.today())
+
+    # Check internet connection
+    try:
+        requests.get("https://www.google.com", timeout=5)
+    except requests.ConnectionError:
+        raise ConnectionError("No internet connection. Please check your network.")
 
     # Make a request to the web service to get disruption information
     url = f"https://rse-with-python.arc.ucl.ac.uk/londontube-service/disruptions/query?date={date_str}"
