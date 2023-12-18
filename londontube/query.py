@@ -59,16 +59,16 @@ def query_line_connections(line_identifier):
 def query_station_information(ids):
     """This function takes the station ID and query the web service for station information
     Arg:
-        ids (int, str): The ID for station/stations in London tube network. eg. 1 (int); "all" (str); "1, 3, 7" (str)
+        ids (int, np.int32, str): The ID for station/stations in London tube network. eg. 1 (int); "all" (str); "1, 3, 7" (str)
     Return:
         station_info_matrix (list): Information with order [[name, ID, latitude, longitude]...]
     """
     # Check input type
-    if not isinstance(ids, (int, str)):
+    if not isinstance(ids, (np.int32, int, str)):
         raise TypeError("The station must be an integer or string.")
     
     # Check input value
-    if isinstance(ids, int):
+    if isinstance(ids, (int, np.int32)):
         # 296 stations in total. Index from 0 to 195
         if not 0 <= ids <= 295:
             raise ValueError("Line ID must be in the range 0 to 295")
