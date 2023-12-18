@@ -74,7 +74,7 @@ def test_incompatible_networks():
         result = Network1 + Network2
 
 def test_distant_neighbours():
-    A = [
+    Matrix3 = [
         [0, 1, 0, 0, 0, 0, 0, 0, 0],
         [1, 0, 0, 0, 1, 0, 0, 0, 0],
         [0, 0, 0, 0, 1, 0, 0, 0, 0],
@@ -86,5 +86,18 @@ def test_distant_neighbours():
         [0, 0, 0, 0, 0, 0, 1, 1, 0],
     ]
     expected = [1, 2, 5, 6]
-    result = Network.distant_neighbours(1, 4, A)
+    result = Network.distant_neighbours(1, 4, Matrix3)
     assert result == expected
+
+def test_dijstra_paths():
+    Matrix4 = [
+        [0, 1, 2, 0, 0],
+        [1, 0, 0, 1, 0],
+        [2, 0, 0, 0, 4],
+        [0, 1, 0, 0, 1],
+        [0, 0, 4, 1, 0]
+    ]
+    expected = ([0, 1, 3, 4], 3)
+    result = Network.dijkstra(0, 4, Matrix4)
+    assert expected == result
+
