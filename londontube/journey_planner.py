@@ -1,6 +1,6 @@
 import argparse
-import query
-from Network import Network
+from . import query
+from .Network import Network
 import matplotlib.pyplot as plt
 from datetime import date
 
@@ -99,7 +99,7 @@ def journey_planner(args):
     # Plot
     plot_journey(journey, args.plot)
 
-if __name__ == "__main__":
+def process():
     parser = argparse.ArgumentParser(description="Journey Planner Tool")
     parser.add_argument("--plot", action="store_true", help="Generate and save a plot of the journey")
     parser.add_argument("start", type=str, help="Start station index or name")
@@ -107,3 +107,7 @@ if __name__ == "__main__":
     parser.add_argument("setoff_date", nargs='?', default=str(date.today()), type=str, help="Setoff date in YYYY-MM-DD format (optional)")
     args = parser.parse_args()
     journey_planner(args)
+
+if __name__ == "__main__":
+    process()
+    
