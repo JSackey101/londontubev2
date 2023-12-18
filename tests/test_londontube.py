@@ -5721,3 +5721,12 @@ def test_requests():
         result = query_line_connections(2)
         mock_get.assert_called_with("https://rse-with-python.arc.ucl.ac.uk/londontube-service/line/query?line_identifier=2")
 
+def test_query_line_connections():
+    with patch.object(requests, "get") as mock_get:
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.text = "10,27,2\n10,243,4\n22,40,2\n22,156,3\n27,106,2\n40,41,3\n41,180,3\n42,180,3\n42,281,3\n44,203,2\n44,237,2\n70,171,2\n70,289,2\n93,247,2\n93,282,1\n106,277,3\n141,282,2\n141,289,2\n143,203,2\n143,274,4\n156,227,2\n171,274,4\n227,271,1\n241,281,3\n243,247,1\n271,277,2\n"
+        result = query_line_connections(2)
+        expected_adjacency_matrix = A
+        expected_n_nodes = 296
+        assert np.array_equal(expected_adjacency_matrix, result.adjacency_matrix)
+        assert expected_n_nodes == result.n_nodes
