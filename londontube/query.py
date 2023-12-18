@@ -3,7 +3,7 @@ from datetime import date
 import csv
 from io import StringIO
 import numpy as np
-from Network import Network
+from .Network import Network
 
 
 
