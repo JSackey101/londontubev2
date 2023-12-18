@@ -86,7 +86,7 @@ def journey_planner(args):
 
     print("Date:", args.setoff_date)
     journey, duration = plan_journey(args.start, args.dest, args.setoff_date)
-    print("Journey will take", duration, "minutes.")
+    print(f"Journey will take {duration:.0f} minutes.")
     for i in range(len(journey)):
         station_info = query.query_station_information(journey[i])
         if i == 0:
