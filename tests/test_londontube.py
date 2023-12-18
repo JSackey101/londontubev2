@@ -101,3 +101,12 @@ def test_dijstra_paths():
     result = Network.dijkstra(0, 4, Matrix4)
     assert expected == result
 
+def test_no_possible_paths():
+    Matrix5 = [
+        [0, 1, 0],
+        [1, 0, 0],
+        [0, 0, 0]
+    ]
+    expected = None
+    result = Network.dijkstra(0, 2, Matrix5)
+    assert expected == result
