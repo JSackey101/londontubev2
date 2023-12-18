@@ -6,7 +6,7 @@ from Network import Network
 
 
 
-def test_adding_n_nodes():
+def test_adding_networks():
     Matrix1 = [
         [0, 1, 0, 0],
         [1, 0, 2, 0],
@@ -29,29 +29,6 @@ def test_adding_n_nodes():
     ])
     result = Network1 + Network2
     assert result.n_nodes == expected.n_nodes
-
-def test_adding_adjacency_matrix():
-    Matrix1 = [
-        [0, 1, 0, 0],
-        [1, 0, 2, 0],
-        [0, 2, 0, 0],
-        [0, 0, 0, 0]
-    ]
-    Matrix2 = [
-        [0, 0, 0, 3],
-        [0, 0, 0, 1],
-        [0, 0, 0, 0],
-        [3, 1, 0, 0]
-    ]
-    Network1 = Network(4, Matrix1)
-    Network2 = Network(4, Matrix2)
-    expected = Network(4, [
-        [0, 1, 0, 3],
-        [1, 0, 2, 1],
-        [0, 2, 0, 0],
-        [3, 1, 0, 0]
-    ])
-    result = Network1 + Network2
     assert np.array_equal(result.adjacency_matrix, expected.adjacency_matrix)
 
 def test_incompatible_networks():
