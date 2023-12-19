@@ -106,11 +106,11 @@ We welcome contributions from the community. To contribute to this project, plea
 
 2. Clone the Forked Repository:
    - Clone your forked repository to your local machine:
-     git clone https://github.com/your-username/london-journey-planner.git
+    git clone https://github.com/your-username/london-journey-planner.git
 
 3. Create a New Branch:
    - Navigate into the cloned directory and create a new branch for your feature or bug fix:
-     git checkout -b your-feature-branch
+    git checkout -b your-feature-branch
 
 4. Make Your Changes:
    - Implement your feature or bug fix.
