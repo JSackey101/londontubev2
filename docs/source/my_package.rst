@@ -31,17 +31,17 @@ data fetching from web services, and object-oriented programming in Python to so
 
 Example
 -------
-To plan a journey from 'Waterloo' to 'Warren Street' on 2023-12-19, and save the plot as a png file:
+To plan a journey from 'Waterloo' to 'Warren Street' on 2023-12-19, and save the plot as a png file::
 
-$journey-planner --plot "waterloo" "warren street" 2023-12-19
-Date: 2023-12-19
-Journey will take 9 minutes.
-Start: Waterloo
-Westminster
-Green Park
-Oxford Circus
-End: Warren Street
-Plot saved to journey_from_Waterloo_to_Warren_Street.png
+    $journey-planner --plot "waterloo" "warren street" 2023-12-19
+    Date: 2023-12-19
+    Journey will take 9 minutes.
+    Start: Waterloo
+    Westminster
+    Green Park
+    Oxford Circus
+    End: Warren Street
+    Plot saved to journey_from_Waterloo_to_Warren_Street.png
 
 This package is a prototype and is intended for educational purposes in network analysis and Python programming.
 
@@ -54,7 +54,7 @@ To install the londontube package, follow these steps:
 
 1. Ensure you have Python installed on your system. Python version should be >=3.7 and <3.11.
 2. Navigate to the directory containing the package files in your terminal or command prompt.
-3. Run the installation command:
+3. Run the installation command::
 
     pip install .
 
@@ -64,22 +64,22 @@ Example Workflow
 ----------------
 After installation, you can use the package to plan journeys on the London tube network. Here's a step-by-step example:
 
-1. Import the `journey-planner` function from the `journey_planner` module:
+1. Import the `journey-planner` function from the `journey_planner` module::
 
     from journey_planner import journey_planner
 
-2. Define your start and destination stations along with the date of the journey and the status for plot. For example, to plan a journey from 'Waterloo' to 'Baker Street' on January 1, 2023, and finally plot it:
+2. Define your start and destination stations along with the date of the journey and the status for plot. For example, to plan a journey from 'Waterloo' to 'Baker Street' on January 1, 2023, and finally plot it::
 
     plot = True
     start = "Waterloo"
     dest = "Warren Street"
     setoff_date = "2023-12-19"
 
-3. Call the `journey_planner` function with these parameters:
+3. Call the `journey_planner` function with these parameters::
 
     journey_planner(plot, start, dest, setoff_date)
 
-4. The function will return the journey route and duration:
+4. The function will return the journey route and duration::
 
     Date: 2023-12-19
     Journey will take 9 minutes.
