@@ -5,14 +5,23 @@ import matplotlib.pyplot as plt
 from datetime import date
 
 def plan_journey(start, dest, date):
-    """This funciton takes start, destination and date, and return the path and duration of the journey.
-    Args:
-        start (int, str): The ID or name of the start station.
-        dest (int, str): The ID or name of destination station.
-        date (str): The date of the journey
-    Returns:
-        journey (list): A list that includes the IDs of passing stations, with order.
-        duration (float): The time spent.
+    """
+    Calculate the path and duration of a journey given the start point, destination, and date.
+
+    Parameters
+    ----------
+    start : int or str
+        The ID or name of the start station.
+    dest : int or str
+        The ID or name of the destination station.
+    date : str
+        The date of the journey in 'YYYY-MM-DD' format.
+
+    Returns
+    -------
+    tuple of (list of int, float)
+        A tuple where the first element is a list that includes the IDs of passing stations in order,
+        and the second element is the duration of the journey in minutes.
     """
     # If start or dest is a str, then convert it to station ID
     if type(start) == str:
@@ -30,10 +39,15 @@ def plan_journey(start, dest, date):
     return journey, duration
 
 def plot_journey(journey, save=False) -> None:
-    """This function takes the path of journey and plot a figure to visulize it.
-    Args:
-        journey (list): IDs of passing stations.
-        save (bool): If it is ture, the figure will be saved.
+    """
+    Plot a figure to visualize the journey path.
+
+    Parameters
+    ----------
+    journey : list of int/np.int32
+        IDs of passing stations in the journey.
+    save : bool, optional
+        If True, the figure will be saved. Default is False.
     """
     # Obtain all stations' information.
     stations_info = query.query_station_information("all")
@@ -82,6 +96,17 @@ def journey_planner(plot, start, dest, setoff_date):
     """
     This function takes arguments from parser(--plot(optional) start dest setoff_date(optional, defalt is today)), 
     and visulize the journey information.
+
+    Parameters
+    ----------
+    plot : bool
+        If it is true then plot the figure for the journey and save as png file.
+    start : int or str
+        The ID or name of the start station.
+    dest : int or str
+        The ID or name of the destination station.
+    setoff_date : str
+        The date of the journey in 'YYYY-MM-DD' format.
     """
 
     print("Date:", setoff_date)
