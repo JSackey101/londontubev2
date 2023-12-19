@@ -78,14 +78,14 @@ def plot_journey(journey, save=False) -> None:
     return
 
 
-def journey_planner(args):
+def journey_planner(plot, start, dest, setoff_date):
     """
     This function takes arguments from parser(--plot(optional) start dest setoff_date(optional, defalt is today)), 
     and visulize the journey information.
     """
 
-    print("Date:", args.setoff_date)
-    journey, duration = plan_journey(args.start, args.dest, args.setoff_date)
+    print("Date:", setoff_date)
+    journey, duration = plan_journey(start, dest, setoff_date)
     print(f"Journey will take {duration:.0f} minutes.")
     for i in range(len(journey)):
         station_info = query.query_station_information(journey[i])
@@ -97,7 +97,8 @@ def journey_planner(args):
             print(station_info[0][0])
 
     # Plot
-    plot_journey(journey, args.plot)
+    if plot:
+        plot_journey(journey, plot)
 
 def process():
     parser = argparse.ArgumentParser(description="Journey Planner Tool")
@@ -106,8 +107,7 @@ def process():
     parser.add_argument("dest", type=str, help="Destination station index or name")
     parser.add_argument("setoff_date", nargs='?', default=str(date.today()), type=str, help="Setoff date in YYYY-MM-DD format (optional)")
     args = parser.parse_args()
-    journey_planner(args)
+    journey_planner(args.plot, args.start, args.dest, args.setoff_date)
 
 if __name__ == "__main__":
     process()
-    
