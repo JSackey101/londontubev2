@@ -6,8 +6,8 @@ This Python package provides tools for planning journeys on the London Undergrou
 utilize real-time data to calculate the most efficient routes between stations, considering current network 
 conditions and disruptions.
 
-Components:
------------
+Components
+----------
 1. journey_planner.py: 
    - Contains the main functionality to plan journeys. 
    - It takes a start and destination station, along with a date, and returns the optimal journey path and duration.
@@ -20,8 +20,8 @@ Components:
    - Handles communication with external web services to fetch real-time data about the London Underground network.
    - Provides functions to query specific aspects of the network, like line connections, and integrates this data into the Network class.
 
-Usage:
-------
+Usage
+-----
 The package can be used to plan journeys across the London Underground. It can handle queries for specific dates 
 and times, taking into account real-time network conditions and disruptions. This makes it an invaluable tool for 
 both daily commuters and tourists seeking to navigate the city efficiently.
@@ -29,8 +29,8 @@ both daily commuters and tourists seeking to navigate the city efficiently.
 Developed as part of the UCL-COMP0233 course, this package demonstrates the application of network analysis, 
 data fetching from web services, and object-oriented programming in Python to solve real-world problems.
 
-Example:
---------
+Example
+-------
 To plan a journey from 'Waterloo' to 'Warren Street' on 2023-12-19, and save the plot as a png file:
 
 $journey-planner --plot "waterloo" "warren street" 2023-12-19
@@ -45,8 +45,8 @@ Plot saved to journey_from_Waterloo_to_Warren_Street.png
 
 This package is a prototype and is intended for educational purposes in network analysis and Python programming.
 
-London Underground Journey Planner: User Guide
-==============================================
+User Guide
+==========
 
 Installation
 ------------
@@ -94,8 +94,8 @@ After installation, you can use the package to plan journeys on the London tube 
 This will output the sequence of stations on the journey path and the total journey duration in minutes.
 
 
-London Underground Journey Planner: Developer Guide
-===================================================
+Developer Guide
+===============
 
 Contributing to the Repository
 ------------------------------
@@ -173,10 +173,12 @@ We appreciate your interest in contributing to the London Underground Journey Pl
 Functions in the Package
 ========================
 1. Network.py
+-------------
 
 
 
 2. query.py
+-----------
 
 .. autofunction:: londontube.query.query_line_connections
 .. autofunction:: londontube.query.query_station_information
@@ -187,3 +189,8 @@ Functions in the Package
 .. autofunction:: londontube.query.real_time_network
 
 3. journey_planner.py
+---------------------
+
+.. autofunction:: londontube.journey_planner.plan_journey
+.. autofunction:: londontube.journey_planner.plot_journey
+.. autofunction:: londontube.journey_planner.journey_planner
