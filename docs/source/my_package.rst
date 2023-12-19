@@ -92,3 +92,89 @@ After installation, you can use the package to plan journeys on the London tube 
     
 
 This will output the sequence of stations on the journey path and the total journey duration in minutes.
+
+
+London Underground Journey Planner: Developer Guide
+===================================================
+
+Contributing to the Repository
+------------------------------
+We welcome contributions from the community. To contribute to this project, please follow these steps:
+
+1. Fork the Repository:
+   - Navigate to the GitHub page of the repository and use the 'Fork' button to create your own copy.
+
+2. Clone the Forked Repository:
+   - Clone your forked repository to your local machine:
+     git clone https://github.com/your-username/london-journey-planner.git
+
+3. Create a New Branch:
+   - Navigate into the cloned directory and create a new branch for your feature or bug fix:
+     git checkout -b your-feature-branch
+
+4. Make Your Changes:
+   - Implement your feature or bug fix.
+
+5. Write Tests:
+   - Add or update tests to cover your changes.
+
+6. Follow the Coding Style:
+   - Ensure your code adheres to the project's coding standards (PEP 8 for Python).
+
+7. Commit Your Changes:
+   - Commit your changes with a clear and descriptive commit message.
+
+8. Push to GitHub:
+   - Push your changes to your fork on GitHub.
+
+9. Submit a Pull Request:
+   - Open a pull request from your feature branch to the main repository.
+
+Your pull request will be reviewed by the maintainers and merged into the main codebase after review and approval.
+
+Testing the Code
+----------------
+To ensure the reliability of the package, please follow these guidelines for testing:
+
+1. Write Unit Tests:
+   - Add unit tests for every new feature or bug fix in the `tests` directory.
+   - Use Python's built-in `unittest` framework or a framework like `pytest`.
+
+2. Run Tests Locally:
+   - Run the test suite locally to ensure that all tests pass before submitting a pull request.
+   - You can use commands like `python -m unittest discover` or `pytest`.
+
+3. Continuous Integration:
+   - The project uses continuous integration (CI) tools (e.g., GitHub Actions, Travis CI). Ensure that your code passes all CI checks.
+
+Coding Style
+------------
+This project adheres to the PEP 8 style guide for Python code. Please ensure your code follows these guidelines:
+
+- Use 4 spaces for indentation.
+- Limit lines to 79 characters.
+- Use descriptive variable and function names.
+- Document your code with docstrings.
+
+Additional Resources
+--------------------
+For more information on contributing, testing, and coding styles, please refer to the following resources:
+
+- PEP 8 Style Guide: https://www.python.org/dev/peps/pep-0008/
+- Git and GitHub Guide: https://guides.github.com/
+- Python Testing: https://docs.python.org/3/library/unittest.html
+
+We appreciate your interest in contributing to the London Underground Journey Planner package and look forward to your valuable contributions!
+
+
+
+Functions in the Package
+========================
+1. Network.py
+
+
+
+2. query.py
+.. autofunction:: londontube.query.query_line_connections
+
+3. journey_planner.py
