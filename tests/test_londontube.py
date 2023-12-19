@@ -83,6 +83,16 @@ def test_parse_station_data(data):
         expected = properties["expected"]
         assert result == expected
 
+    
+@pytest.mark.parametrize("data", [fixture[6]])
+def test_query_station_information(data):
+    with patch.object(requests, "get") as mock_get:
+        properties = list(data.values())[0]
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.text = properties["content"]
+        result = query_station_information(1)
+        expected = properties["expected"]
+        assert result == expected
 
 # def test_requests():
 #     with patch.object(requests, "get") as mock_get:
