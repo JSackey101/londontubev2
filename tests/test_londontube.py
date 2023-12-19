@@ -115,9 +115,19 @@ def test_query_station_num(data):
         expected = properties["expected"]
         assert result == expected
 
+
+@pytest.mark.parametrize("data", [fixture[8]])
+def test_query_disruptions(data):
+    with patch.object(requests, "get") as mock_get:
+        properties = list(data.values())[0]
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = properties["content"]
+        result = query_disruptions("2023-12-15")
+        expected = properties["expected"]
+        assert result == expected
+
 # def test_requests():
 #     with patch.object(requests, "get") as mock_get:
 #         result = query_line_connections(2)
 #         mock_get.return_value.status_code = 200
 #         mock_get.assert_called_with("https://rse-with-python.arc.ucl.ac.uk/londontube-service/line/query?line_identifier=2")
-
