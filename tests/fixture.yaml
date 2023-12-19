@@ -28,3 +28,6 @@
 - query_station_information:
       content: "station index,station name,latitude,longitude\n1,Aldgate,51.5143,-0.0755\n"
       expected: [['Aldgate', 1, 51.5143, -0.0755]]
+- query_station_num:
+      content: "station index,station name,latitude,longitude\n269,Warren Street,51.5247,-0.1384\n"
+      expected: 269
