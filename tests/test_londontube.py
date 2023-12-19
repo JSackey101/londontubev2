@@ -72,6 +72,17 @@ def test_query_line_connections(data):
         assert expected.n_nodes == result.n_nodes
 
 
+@pytest.mark.parametrize("data", [fixture[6]])
+def test_parse_station_data(data):
+    with patch.object(requests, "get") as mock_get:
+        properties = list(data.values())[0]
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.text = properties["content"]
+        csv_data = properties["content"].strip()
+        result = parse_station_data(csv_data)
+        expected = properties["expected"]
+        assert result == expected
+
 
 # def test_requests():
 #     with patch.object(requests, "get") as mock_get:
