@@ -1,5 +1,3 @@
-.. automodule:: my_package.my_module
-   :members:
 
 London Underground Journey Planner Package
 ==========================================
@@ -30,3 +28,19 @@ both daily commuters and tourists seeking to navigate the city efficiently.
 
 Developed as part of the UCL-COMP0233 course, this package demonstrates the application of network analysis, 
 data fetching from web services, and object-oriented programming in Python to solve real-world problems.
+
+Example:
+--------
+To plan a journey from 'Waterloo' to 'Warren Street' on 2023-12-19, and save the plot as a png file:
+
+$journey-planner --plot "waterloo" "warren street" 2023-12-19
+Date: 2023-12-19
+Journey will take 9 minutes.
+Start: Waterloo
+Westminster
+Green Park
+Oxford Circus
+End: Warren Street
+Plot saved to journey_from_Waterloo_to_Warren_Street.png
+
+This package is a prototype and is intended for educational purposes in network analysis and Python programming.
