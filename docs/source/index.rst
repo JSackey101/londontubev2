@@ -10,6 +10,8 @@ Welcome to londontube's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   my_package
+
 
 
 Indices and tables
