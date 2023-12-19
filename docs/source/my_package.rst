@@ -105,12 +105,14 @@ We welcome contributions from the community. To contribute to this project, plea
    - Navigate to the GitHub page of the repository and use the 'Fork' button to create your own copy.
 
 2. Clone the Forked Repository:
-   - Clone your forked repository to your local machine:
-    git clone https://github.com/your-username/london-journey-planner.git
+   - Clone your forked repository to your local machine::
+    
+        git clone https://github.com/your-username/london-journey-planner.git
 
 3. Create a New Branch:
-   - Navigate into the cloned directory and create a new branch for your feature or bug fix:
-    git checkout -b your-feature-branch
+   - Navigate into the cloned directory and create a new branch for your feature or bug fix::
+    
+        git checkout -b your-feature-branch
 
 4. Make Your Changes:
    - Implement your feature or bug fix.
@@ -175,6 +177,13 @@ Functions in the Package
 
 
 2. query.py
+
 .. autofunction:: londontube.query.query_line_connections
+.. autofunction:: londontube.query.query_station_information
+.. autofunction:: londontube.query.query_station_num
+.. autofunction:: londontube.query.parse_station_data
+.. autofunction:: londontube.query.query_disruptions
+.. autofunction:: londontube.query.parse_disruptions_data
+.. autofunction:: londontube.query.real_time_network
 
 3. journey_planner.py
