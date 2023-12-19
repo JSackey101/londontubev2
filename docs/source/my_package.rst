@@ -175,7 +175,9 @@ Functions in the Package
 1. Network.py
 -------------
 
-
+.. autofunction:: londontube.Network.Network.__add__
+.. autofunction:: londontube.Network.Network.distant_neighbours
+.. autofunction:: londontube.Network.Network.dijkstra
 
 2. query.py
 -----------
