@@ -199,7 +199,7 @@ def real_time_network(date):
         for j in range(len(disruptions)):
             # For single line
             # Disruption format [[line_idx [station1 station2] delay] x n].
-            if disruptions[j][0] == i:
+            if disruptions[j][0] == i or disruptions[j][0] is None:
                 # Disruption between two stations
                 if len(disruptions[j][1]) == 2:
                     station1 = disruptions[j][1][0]
@@ -216,6 +216,7 @@ def real_time_network(date):
                     line_network.adjacency_matrix[:, station] *= delay
         # Add real timeline networks together
         real_time_network += line_network
+
     return real_time_network
 
 
@@ -293,7 +294,7 @@ table_separator = "-" * 65
 all_tables = []
 
 for v_value_index, v_value in enumerate(v_values):
-    current_table = [table_header.format("", "Network.distant_neighbours (secs)", "Provided method (secs)"),
+    current_table = [table_header.format("n", "Network.distant_neighbours (secs)", "Provided method (secs)"),
                      table_separator]
 
     for n_value_index, n_value in enumerate(n_values):
@@ -318,7 +319,13 @@ for v_value_index, v_value in enumerate(v_values):
 
     all_tables.append(current_table)
 
-# Output all tables
+# Output all tables to md file
+output_content = ''
 for table in all_tables:
     for line in table:
-        print(line)
+        output_content += str(line) + '\n'
+
+with open('output.md', 'w') as file:
+    file.write('# Output 9 tables for Baker Street, Blackfriars, Cockfosters, Earl’s Court, Elephant & Castle, '
+               'Finsbury Park, King’s Cross St. Pancras, Morden, Vauxhall respectively\n\n')
+    file.write(output_content)
