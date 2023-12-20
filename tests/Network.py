@@ -1,29 +1,16 @@
 import numpy as np
 
 class Network:
+    """
+    Create a class called Network to show the number of nodes, and the adjacency matrix.
+    """
     def __init__(self, n_nodes, adjacency_matrix):
         self.n_nodes = n_nodes
         self.adjacency_matrix = adjacency_matrix   
     
     def __add__(self, Network2):
         """
-        Enable the Network class to use the '+' operator with another Network object of the same size 
-        adjacency matrix to create a new Network object.
-
-        Parameters
-        ----------
-        Network2 : Network
-            Another Network object with the same number of nodes.
-
-        Returns
-        -------
-        Network
-            A new Network object representing the element-wise sum of the adjacency matrices.
-
-        Raises
-        ------
-        ValueError
-            If the two Network objects have different numbers of nodes.
+        Make the Network class be able to operate with + on other Network objects.
         """
         if self.n_nodes != Network2.n_nodes:
             raise ValueError("The two objects have different numbers of nodes")
@@ -42,21 +29,7 @@ class Network:
 
     def distant_neighbours(n, v, adjacency_matrix): 
         """
-        Compute the n-distance neighbours of a particular node in a graph.
-
-        Parameters
-        ----------
-        n : int
-            The desired distance from the given node.
-        v : int
-            The index of the node for which neighbors are to be found.
-        adjacency_matrix : list of list of int
-            The adjacency matrix representing the graph.
-
-        Returns
-        -------
-        list of int
-            A list containing the indices of nodes that are at a distance of n from the given node v.
+        Compute the 𝑛-distant neighbours of a particular node.
         """
         matrix = np.array(adjacency_matrix, dtype=int)
         neighbours = [v]
@@ -74,24 +47,8 @@ class Network:
     
     def dijkstra(start_node, dest_node, adjacency_matrix):
         """
-        Compute the shortest path with the lowest cost between a start and destination node using Dijkstra’s algorithm.
-
-        Parameters
-        ----------
-        start_node : int
-            The index of the start node.
-        dest_node : int
-            The index of the destination node.
-        adjacency_matrix : numpy.ndarray
-            The adjacency matrix of the network.
-
-        Returns
-        -------
-        Tuple[List[int], float] or None
-            A tuple containing the path as a list of node indices and the cost, which is the sum of edge weights along
-            the shortest path, of the path.
-            
-            If no path exists, this function returns (None, 0) and prints "No possible paths."
+        Compute the path across the network with the lowest cost between a start and destination node, 
+        using Dijkstra’s algorithm.
         """
         tenative_cost = list(np.full((1,len(adjacency_matrix[0])), np.inf).flatten())
         tenative_cost[start_node] = 0
@@ -137,3 +94,6 @@ class Network:
         
         return path_list,tenative_cost[dest_node]
  
+
+
+

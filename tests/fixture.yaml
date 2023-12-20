@@ -1,0 +1,103 @@
+- adding_networks:
+      Matrix1: [[[0, 1, 0, 0],[1, 0, 2, 0],[0, 2, 0, 0],[0, 0, 0, 0]]]
+      Matrix2: [[[0, 0, 0, 3], [0, 0, 0, 1], [0, 0, 0, 0], [3, 1, 0, 0]]]
+      expectedMatrix: [[[0, 1, 0, 3], [1, 0, 2, 1], [0, 2, 0, 0], [3, 1, 0, 0]]]
+- incompatible_networks:
+      Matrix1: [[[0, 1, 0, 0], [1, 0, 2, 0], [0, 2, 0, 0], [0, 0, 0, 0]]]
+      Matrix2: [[[0, 0, 0, 3, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 0], [3, 1, 0, 0, 0], [1, 0, 0, 1, 2]]]
+- distant_neighbours:
+      Matrix1: [[
+        [0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 1, 1, 0, 0, 1, 1, 0, 0],
+        [0, 0, 0, 1, 1, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 1, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 1, 1, 0]
+    ]]
+      expected: [1, 2, 5, 6]
+- dijkstra_paths:
+      Matrix1: [[[0, 1, 2, 0, 0], [1, 0, 0, 1, 0], [2, 0, 0, 0, 4], [0, 1, 0, 0, 1], [0, 0, 4, 1, 0]]]
+      expected: [[0, 1, 3, 4], 3]
+- no_possible_paths:
+      Matrix1: [[[0, 1, 0], [1, 0, 0], [0, 0, 0]]]
+- query_line_connections:
+      content: "10,27,2\n10,243,4\n22,40,2\n22,156,3\n27,106,2\n40,41,3\n41,180,3\n42,180,3\n42,281,3\n44,203,2\n44,237,2\n70,171,2\n70,289,2\n93,247,2\n93,282,1\n106,277,3\n141,282,2\n141,289,2\n143,203,2\n143,274,4\n156,227,2\n171,274,4\n227,271,1\n241,281,3\n243,247,1\n271,277,2\n"
+- query_station_information:
+      content: "station index,station name,latitude,longitude\n1,Aldgate,51.5143,-0.0755\n"
+      expected: [['Aldgate', 1, 51.5143, -0.0755]]
+- query_station_num:
+      content: "station index,station name,latitude,longitude\n269,Warren Street,51.5247,-0.1384\n"
+      expected: 269
+- query_disruptions:
+      content: [{'delay': 7, 'line': 7, 'stations': [269]}, {'delay': 6, 'line': 6, 'stations': [181]}, {'delay': 3, 'line': 10, 'stations': [12, 271]}, {'delay': 3, 'stations': [139, 231]}, {'delay': 2, 'stations': [136, 202]}, {'delay': 1, 'line': 1, 'stations': [75, 288]}, {'delay': 9, 'line': 2, 'stations': [91, 144]}, {'delay': 3, 'line': 9, 'stations': [94]}, {'delay': 5, 'line': 1, 'stations': [153, 224]}, {'delay': 9, 'line': 9, 'stations': [219, 253]}, {'delay': 7, 'stations': [32, 35]}, {'delay': 7, 'line': 2, 'stations': [223]}, {'delay': 5, 'line': 3, 'stations': [98, 230]}, {'delay': 8, 'stations': [112, 290]}, {'delay': 3, 'line': 2, 'stations': [43, 165]}, {'delay': 8, 'line': 11, 'stations': [12, 220]}, {'delay': 6, 'stations': [216, 286]}, {'delay': 0, 'line': 9, 'stations': [122, 144]}, {'delay': 9, 'stations': [48, 86]}]
+      expected: [[7, [269], 7], [6, [181], 6], [10, [12, 271], 3], [null, [139, 231], 3], [null, [136, 202], 2], [1, [75, 288], 1], [2, [91, 144], 9], [9, [94], 3], [1, [153, 224], 5], [9, [219, 253], 9], [null, [32, 35], 7], [2, [223], 7], [3, [98, 230], 5], [null, [112, 290], 8], [2, [43, 165], 3], [11, [12, 220], 8], [null, [216, 286], 6], [9, [122, 144], 0], [null, [48, 86], 9]]
+- line_connections_value_error1:
+      errormsg: "Line ID must be in the range 0 to 11"
+      execute: "query_line_connections(-1)"
+- line_connections_value_error2:
+      errormsg: "Line ID must be in the range 0 to 11"
+      execute: "query_line_connections(-1)"
+- line_connections_value_error3:
+      errormsg: "Error: Unable to fetch line connections for 5."
+      execute: "query_line_connections(5)"
+- station_information_value_error1:
+      errormsg: "Line ID must be in the range 0 to 295"
+      execute: "query_station_information(-1)"
+- station_information_value_error2:
+      errormsg: "Line ID must be in the range 0 to 295"
+      execute: "query_station_information(297)"
+- station_information_value_error3:
+      errormsg: "Error: Unable to fetch station information for 200."
+      execute: "query_station_information(200)"
+- station_num_value_error:
+      errormsg: "Error: Unable to fetch station information for Euston."
+      execute: "query_station_num('Euston')"
+- line_connections_type_error:
+      errormsg: "The line identifier must be an integer."
+      execute: "query_line_connections(None)"
+- station_information_type_error:
+      errormsg: "The station must be an integer or string."
+      execute: "query_station_information(None)"
+- station_num_type_error:
+      errormsg: "The station name must be an string."
+      execute: "query_station_num(None)"
+- line_connections_connection_error:
+      errormsg: "No internet connection. Please check your network."
+      execute: "query_line_connections(5)"
+- station_information_connection_error:
+      errormsg: "No internet connection. Please check your network."
+      execute: "query_station_information(5)"
+- station_num_connection_error:
+      errormsg: "No internet connection. Please check your network."
+      execute: "query_station_num('Euston')"
+- disruptions_connection_error:
+      errormsg: "No internet connection. Please check your network."
+      execute: "query_disruptions('2023-12-15')"
+- requests_line_connections:
+      execute: "query_line_connections(2)"
+      call: 'https://rse-with-python.arc.ucl.ac.uk/londontube-service/line/query?line_identifier=2'
+      content: "10,27,2\n10,243,4\n22,40,2\n22,156,3\n27,106,2\n40,41,3\n41,180,3\n42,180,3\n42,281,3\n44,203,2\n44,237,2\n70,171,2\n70,289,2\n93,247,2\n93,282,1\n106,277,3\n141,282,2\n141,289,2\n143,203,2\n143,274,4\n156,227,2\n171,274,4\n227,271,1\n241,281,3\n243,247,1\n271,277,2\n"
+- requests_station_information:
+      execute: "query_station_information(2)"
+      call: "https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id=2"
+      content: "station index,station name,latitude,longitude\n1,Aldgate,51.5143,-0.0755\n"
+- requests_station_num:
+      execute: "query_station_num('Warren Street')"
+      call: "https://rse-with-python.arc.ucl.ac.uk/londontube-service/stations/query?id=Warren Street"
+      content: "station index,station name,latitude,longitude\n269,Warren Street,51.5247,-0.1384\n"
+- requests_disruptions:
+      execute: query_disruptions('2023-12-15')
+      call: "https://rse-with-python.arc.ucl.ac.uk/londontube-service/disruptions/query?date=2023-12-15"
+      content: [{'delay': 7, 'line': 7, 'stations': [269]}, {'delay': 6, 'line': 6, 'stations': [181]}, {'delay': 3, 'line': 10, 'stations': [12, 271]}, {'delay': 3, 'stations': [139, 231]}, {'delay': 2, 'stations': [136, 202]}, {'delay': 1, 'line': 1, 'stations': [75, 288]}, {'delay': 9, 'line': 2, 'stations': [91, 144]}, {'delay': 3, 'line': 9, 'stations': [94]}, {'delay': 5, 'line': 1, 'stations': [153, 224]}, {'delay': 9, 'line': 9, 'stations': [219, 253]}, {'delay': 7, 'stations': [32, 35]}, {'delay': 7, 'line': 2, 'stations': [223]}, {'delay': 5, 'line': 3, 'stations': [98, 230]}, {'delay': 8, 'stations': [112, 290]}, {'delay': 3, 'line': 2, 'stations': [43, 165]}, {'delay': 8, 'line': 11, 'stations': [12, 220]}, {'delay': 6, 'stations': [216, 286]}, {'delay': 0, 'line': 9, 'stations': [122, 144]}, {'delay': 9, 'stations': [48, 86]}]
+- disruptions_value_error1:
+      errormsg: "Date provided is in the wrong format. Correct format would be 'YYYY-MM-DD'"
+      execute: "query_disruptions('15-12-2023')"
+- disruptions_value_error2:
+      errormsg: "Provided date outside the valid range. Valid range is from 2023-1-1 to 2024-12-31"
+      execute: "query_disruptions('2025-12-15')"
+- disruptions_value_error3:
+      errormsg: "Provided date outside the valid range. Valid range is from 2023-1-1 to 2024-12-31"
+      execute: "query_disruptions('2022-12-15')"
