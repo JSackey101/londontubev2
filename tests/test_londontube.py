@@ -154,13 +154,16 @@ def test_query_type_error(data):
 def test_connection_error(data):
     with patch.object(requests, "get") as mock_get:
         properties = list(data.values())[0]
-        mock_get.return_value.status_code = 200
+        mock_get.return_value.status_code.return_value = 200
         mock_get.side_effect = requests.ConnectionError
         with pytest.raises(ConnectionError, match=properties["errormsg"]):
             exec(properties["execute"])
 
-# def test_requests():
-#     with patch.object(requests, "get") as mock_get:
-#         result = query_line_connections(2)
-#         mock_get.return_value.status_code = 200
-#         mock_get.assert_called_with("https://rse-with-python.arc.ucl.ac.uk/londontube-service/line/query?line_identifier=2")
+@pytest.mark.parametrize("data", [(fixture[23]),(fixture[24]),(fixture[25]),(fixture[26])])
+def test_requests(data):
+    with patch.object(requests, "get") as mock_get:
+        properties = list(data.values())[0]
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.text = properties["content"]
+        result = exec(properties["execute"])
+        mock_get.assert_called_with(properties["call"])
