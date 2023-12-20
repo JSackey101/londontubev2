@@ -77,7 +77,7 @@ class Network:
                 dest_not_reached = False
             elif min([tenative_cost[i] for i in unvisited_nodes]) == np.inf:
                 print("No possible paths.")
-                return None, None
+                return None
             else:
                 current_node = unvisited_nodes[([tenative_cost[i] for i in unvisited_nodes]).index(min(([tenative_cost[i] for i in unvisited_nodes])))]
         path_list = []
