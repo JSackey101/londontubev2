@@ -12,10 +12,21 @@ def query_line_connections(line_identifier):
     """This function takes the line identifier, quering the web service for information 
     about the connectivity of a particular line, and returns a Network object 
     that represents that line.
-    Arg:
-        line_identifier (int): The ID for a particular line in London tube network
-    Return:
-        line_network (Network): A network object of the line, i.e. a sub-network of London tube
+
+    Parameters
+    ----------
+    line_identifier: int
+        The ID for a particular line in London tube network
+    
+    Returns
+    -------
+    line_network
+        A network object of the line, i.e. a sub-network of London tube
+    
+    Examples
+    --------
+    >>> from query import query_line_connections
+    >>> Bakerloo = query_line_connections(0)
     """
     # Check input type
     if not isinstance(line_identifier, int):
@@ -57,11 +68,18 @@ def query_line_connections(line_identifier):
 
 
 def query_station_information(ids):
-    """This function takes the station ID and query the web service for station information
-    Arg:
-        ids (int, np.int32, str): The ID for station/stations in London tube network. eg. 1 (int); "all" (str); "1, 3, 7" (str)
-    Return:
-        station_info_matrix (list): Information with order [[name, ID, latitude, longitude]...]
+    """
+    This function takes the station ID and queries the web service for station information.
+
+    Parameters
+    ----------
+    ids : int, np.int32, str
+        The ID for station/stations in London tube network. For example, 1 (int), "all" (str), "1, 3, 7" (str).
+    
+    Returns
+    -------
+    station_info_matrix : list
+        Information with order [[name, ID, latitude, longitude]...].
     """
     # Check input type
     if not isinstance(ids, (np.int32, int, str)):
@@ -94,11 +112,18 @@ def query_station_information(ids):
         raise ValueError(f"Error: Unable to fetch station information for {ids}.")
 
 def query_station_num(station_name):
-    """This function takes the name of a station and return its station ID.
-    Arg:
-        station_name (str): The name of station. eg."Warren street"
-    Return:
-        station_id (int): The ID of given station.
+    """
+    This function takes the name of a station and returns its station ID.
+
+    Parameters
+    ----------
+    station_name : str
+        The name of the station. For example, "Warren Street".
+
+    Returns
+    -------
+    station_id : int
+        The ID of the given station.
     """
     # Check input type
     if not isinstance(station_name, str):
@@ -127,11 +152,18 @@ def query_station_num(station_name):
         raise ValueError(f"Error: Unable to fetch station information for {station_name}.")
 
 def parse_station_data(csv_data):
-    """This function converts the csv data of station information to a list.
-    Arg:
-        csv_data: Station information data obtained from web service.
-    Return:
-        station_info_matrix (list): Information with order [[name, ID, latitude, longitude]...]
+    """
+    This function converts the csv data of station information into a list.
+
+    Parameters
+    ----------
+    csv_data : str
+        Station information data obtained from the web service in CSV format.
+
+    Returns
+    -------
+    list
+        A list of station information, formatted as [[name, ID, latitude, longitude]...].
     """
 
     # Parse the CSV data and return station information as a matrix-like structure
@@ -159,11 +191,19 @@ def parse_station_data(csv_data):
 
 
 def query_disruptions(date_str=None):
-    """This function takes a date and query the web service for service disruptions.
-    Arg:
-        date_str (str): A date in 2023. eg."2023-12-15"
-    Return:
-        disruptions (list): Disruptions with order [[line, [station1, station2], delay] [None(all the lines), [station], delay]...]
+    """
+    This function takes a date and queries the web service for service disruptions.
+
+    Parameters
+    ----------
+    date_str : str, optional
+        A date in the format 'YYYY-MM-DD' (default is None). For example, "2023-12-15".
+
+    Returns
+    -------
+    list
+        A list of service disruptions. Each disruption is represented as 
+        [line, [station1, station2], delay] or [None (indicating all lines), [station], delay].
     """
     # Set the default date to the present day if not provided
     if date_str is None:
@@ -202,11 +242,19 @@ def query_disruptions(date_str=None):
         print(f"Error: Unable to fetch disruption information for {date_str}.")
 
 def parse_disruptions_data(disruptions_data):
-    """This function converts the service disruptions to a list.
-    Arg:
-        disruptions_data (dict.): Station information data obtained from web service.
-    Return:
-        disruptions_ls (list): Disruptions with order [[line, [station1, station2], delay] [None(all the lines), [station], delay]...]
+    """
+    This function converts the service disruptions data into a list.
+
+    Parameters
+    ----------
+    disruptions_data : dict
+        Service disruptions information obtained from the web service.
+
+    Returns
+    -------
+    list
+        A list of service disruptions. Each disruption is represented as 
+        [line, [station1, station2], delay] or [None (indicating all lines), [station], delay].
     """
     # Parse the disruption data and return it as a matrix-like structure
     disruptions_ls = []
@@ -222,11 +270,18 @@ def parse_disruptions_data(disruptions_data):
     return disruptions_ls
 
 def real_time_network(date):
-    """This function takes a date and return the real-time London tube network on that day.
-    Arg:
-        date (str): A date in 2023. eg."2023-12-15"
-    Return:
-        real_time_network (Network): A Network object that represents the London tube network on a particular date.
+    """
+    This function takes a date and returns the real-time London tube network on that day.
+
+    Parameters
+    ----------
+    date : str
+        A date in the format 'YYYY-MM-DD'. For example, "2023-12-15".
+
+    Returns
+    -------
+    Network
+        A Network object representing the London tube network on the specified date.
     """
     disruptions = query_disruptions(date)
     # Init network
