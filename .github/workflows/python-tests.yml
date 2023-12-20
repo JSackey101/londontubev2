@@ -29,10 +29,7 @@ jobs:
           pip install pytest
           pip install numpy
           pip install pyyaml
-          pip install csv
           pip install requests
-          pip install io
-          pip install unittest
 
       - name: Test with pytest
         run: |
