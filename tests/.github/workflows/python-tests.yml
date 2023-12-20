@@ -1,6 +1,13 @@
-name: Python package
+name: londontube
 
-on: [push]
+on: 
+  push:
+    branches:
+      - 'main'
+      - 'JeffreySackey'
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
   build:
