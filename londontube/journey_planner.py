@@ -111,6 +111,9 @@ def journey_planner(plot, start, dest, setoff_date):
 
     print("Date:", setoff_date)
     journey, duration = plan_journey(start, dest, setoff_date)
+    if journey == None:
+        print("This journey is impossible due to disruptions on the given date")
+        exit()  
     print(f"Journey will take {duration:.0f} minutes.")
     for i in range(len(journey)):
         station_info = query.query_station_information(journey[i])
