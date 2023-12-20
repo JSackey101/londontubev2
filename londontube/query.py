@@ -219,8 +219,7 @@ def query_disruptions(date_str=None):
                 print("Warning: Provided date outside the valid range. Using the present day.")
                 date_str = str(date.today())
         except ValueError:
-            print("Error: Invalid date format. Using the present day.")
-            date_str = str(date.today())
+            raise ValueError("Date provided is in the wrong format. Correct format would be 'YYYY-MM-DD' ")
 
     # Check internet connection
     try:
