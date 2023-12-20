@@ -150,6 +150,14 @@ def test_query_type_error(data):
         with pytest.raises(TypeError, match=properties["errormsg"]):
             exec(properties["execute"])
 
+@pytest.mark.parametrize("data", [(fixture[19]),(fixture[20]),(fixture[21]),(fixture[22])])
+def test_connection_error(data):
+    with patch.object(requests, "get") as mock_get:
+        properties = list(data.values())[0]
+        mock_get.return_value.status_code = 200
+        mock_get.side_effect = requests.ConnectionError
+        with pytest.raises(ConnectionError, match=properties["errormsg"]):
+            exec(properties["execute"])
 
 # def test_requests():
 #     with patch.object(requests, "get") as mock_get:

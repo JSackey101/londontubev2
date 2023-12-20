@@ -64,3 +64,15 @@
 - station_num_type_error:
       errormsg: "The station name must be an string."
       execute: "query_station_num(None)"
+- line_connections_connection_error:
+      errormsg: "No internet connection. Please check your network."
+      execute: "query_line_connections(5)"
+- station_information_connection_error:
+      errormsg: "No internet connection. Please check your network."
+      execute: "query_station_information(5)"
+- station_num_connection_error:
+      errormsg: "No internet connection. Please check your network."
+      execute: "query_station_num('Euston')"
+- disruptions_connection_error:
+      errormsg: "No internet connection. Please check your network."
+      execute: "query_disruptions('2023-12-15')"
