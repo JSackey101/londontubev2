@@ -133,6 +133,16 @@ def test_parse_distruptions_data(data):
         expected = properties["expected"]
         assert result == expected
 
+@pytest.mark.parametrize("data", [(fixture[9]),(fixture[10]),(fixture[11]),(fixture[12]),
+                                  (fixture[13]),(fixture[14]),(fixture[15])])
+def test_query_value_error(data):
+    with patch.object(requests, "get") as mock_get:
+        properties = list(data.values())[0]
+        mock_get.return_value.status_code = 201
+        with pytest.raises(ValueError, match=properties["errormsg"]):
+            exec(properties["execute"])
+
+
 # def test_requests():
 #     with patch.object(requests, "get") as mock_get:
 #         result = query_line_connections(2)

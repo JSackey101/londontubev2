@@ -34,3 +34,24 @@
 - query_disruptions:
       content: [{'delay': 7, 'line': 7, 'stations': [269]}, {'delay': 6, 'line': 6, 'stations': [181]}, {'delay': 3, 'line': 10, 'stations': [12, 271]}, {'delay': 3, 'stations': [139, 231]}, {'delay': 2, 'stations': [136, 202]}, {'delay': 1, 'line': 1, 'stations': [75, 288]}, {'delay': 9, 'line': 2, 'stations': [91, 144]}, {'delay': 3, 'line': 9, 'stations': [94]}, {'delay': 5, 'line': 1, 'stations': [153, 224]}, {'delay': 9, 'line': 9, 'stations': [219, 253]}, {'delay': 7, 'stations': [32, 35]}, {'delay': 7, 'line': 2, 'stations': [223]}, {'delay': 5, 'line': 3, 'stations': [98, 230]}, {'delay': 8, 'stations': [112, 290]}, {'delay': 3, 'line': 2, 'stations': [43, 165]}, {'delay': 8, 'line': 11, 'stations': [12, 220]}, {'delay': 6, 'stations': [216, 286]}, {'delay': 0, 'line': 9, 'stations': [122, 144]}, {'delay': 9, 'stations': [48, 86]}]
       expected: [[7, [269], 7], [6, [181], 6], [10, [12, 271], 3], [null, [139, 231], 3], [null, [136, 202], 2], [1, [75, 288], 1], [2, [91, 144], 9], [9, [94], 3], [1, [153, 224], 5], [9, [219, 253], 9], [null, [32, 35], 7], [2, [223], 7], [3, [98, 230], 5], [null, [112, 290], 8], [2, [43, 165], 3], [11, [12, 220], 8], [null, [216, 286], 6], [9, [122, 144], 0], [null, [48, 86], 9]]
+- line_connections_value_error1:
+      errormsg: "Line ID must be in the range 0 to 11"
+      execute: "query_line_connections(-1)"
+- line_connections_value_error2:
+      errormsg: "Line ID must be in the range 0 to 11"
+      execute: "query_line_connections(-1)"
+- line_connections_value_error3:
+      errormsg: "Error: Unable to fetch line connections for 5."
+      execute: "query_line_connections(5)"
+- station_information_value_error1:
+      errormsg: "Line ID must be in the range 0 to 295"
+      execute: "query_station_information(-1)"
+- station_information_value_error2:
+      errormsg: "Line ID must be in the range 0 to 295"
+      execute: "query_station_information(297)"
+- station_information_value_error3:
+      errormsg: "Error: Unable to fetch station information for 200."
+      execute: "query_station_information(200)"
+- station_num_value_error:
+      errormsg: "Error: Unable to fetch station information for Euston."
+      execute: "query_station_num('Euston')"
