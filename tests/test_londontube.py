@@ -1,14 +1,12 @@
 import pytest
-import sys
 import requests
 import numpy as np
 import yaml
 import csv
 from io import StringIO
 from unittest.mock import patch
-sys.path.insert(0, f"C:/Users/sacke/ResearchSoftwareEngineering/working_group_4/repository/londontube")
-from Network import Network
-from query import query_disruptions, query_line_connections, query_station_information, query_station_num, parse_station_data, parse_disruptions_data
+from .Network import Network
+from .query import query_disruptions, query_line_connections, query_station_information, query_station_num, parse_station_data, parse_disruptions_data
 
 with open("tests/fixture.yaml", "r") as yamlfile:
     fixture = yaml.safe_load(yamlfile)
