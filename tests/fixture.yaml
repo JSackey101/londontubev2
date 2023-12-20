@@ -92,3 +92,12 @@
       execute: query_disruptions('2023-12-15')
       call: "https://rse-with-python.arc.ucl.ac.uk/londontube-service/disruptions/query?date=2023-12-15"
       content: [{'delay': 7, 'line': 7, 'stations': [269]}, {'delay': 6, 'line': 6, 'stations': [181]}, {'delay': 3, 'line': 10, 'stations': [12, 271]}, {'delay': 3, 'stations': [139, 231]}, {'delay': 2, 'stations': [136, 202]}, {'delay': 1, 'line': 1, 'stations': [75, 288]}, {'delay': 9, 'line': 2, 'stations': [91, 144]}, {'delay': 3, 'line': 9, 'stations': [94]}, {'delay': 5, 'line': 1, 'stations': [153, 224]}, {'delay': 9, 'line': 9, 'stations': [219, 253]}, {'delay': 7, 'stations': [32, 35]}, {'delay': 7, 'line': 2, 'stations': [223]}, {'delay': 5, 'line': 3, 'stations': [98, 230]}, {'delay': 8, 'stations': [112, 290]}, {'delay': 3, 'line': 2, 'stations': [43, 165]}, {'delay': 8, 'line': 11, 'stations': [12, 220]}, {'delay': 6, 'stations': [216, 286]}, {'delay': 0, 'line': 9, 'stations': [122, 144]}, {'delay': 9, 'stations': [48, 86]}]
+- disruptions_value_error1:
+      errormsg: "Date provided is in the wrong format. Correct format would be 'YYYY-MM-DD'"
+      execute: "query_disruptions('15-12-2023')"
+- disruptions_value_error2:
+      errormsg: "Provided date outside the valid range. Valid range is from 2023-1-1 to 2024-12-31"
+      execute: "query_disruptions('2025-12-15')"
+- disruptions_value_error3:
+      errormsg: "Provided date outside the valid range. Valid range is from 2023-1-1 to 2024-12-31"
+      execute: "query_disruptions('2022-12-15')"

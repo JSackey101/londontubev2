@@ -135,7 +135,8 @@ def test_parse_distruptions_data(data):
         assert result == expected
 
 @pytest.mark.parametrize("data", [(fixture[9]),(fixture[10]),(fixture[11]),(fixture[12]),
-                                  (fixture[13]),(fixture[14]),(fixture[15])])
+                                  (fixture[13]),(fixture[14]),(fixture[15]),(fixture[27]),
+                                  (fixture[28]), (fixture[29])])
 def test_query_value_error(data):
     with patch.object(requests, "get") as mock_get:
         properties = list(data.values())[0]
