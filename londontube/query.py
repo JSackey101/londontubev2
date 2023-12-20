@@ -216,8 +216,7 @@ def query_disruptions(date_str=None):
             valid_end_date = date(2024, 12, 31)
 
             if not valid_start_date <= provided_date <= valid_end_date:
-                print("Warning: Provided date outside the valid range. Using the present day.")
-                date_str = str(date.today())
+                raise ValueError("Provided date outside the valid range. Valid range is from 2023-1-1 to 2023-12-31")
         except ValueError:
             raise ValueError("Date provided is in the wrong format. Correct format would be 'YYYY-MM-DD' ")
 
