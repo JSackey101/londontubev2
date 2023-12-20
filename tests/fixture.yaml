@@ -55,3 +55,12 @@
 - station_num_value_error:
       errormsg: "Error: Unable to fetch station information for Euston."
       execute: "query_station_num('Euston')"
+- line_connections_type_error:
+      errormsg: "The line identifier must be an integer."
+      execute: "query_line_connections(None)"
+- station_information_type_error:
+      errormsg: "The station must be an integer or string."
+      execute: "query_station_information(None)"
+- station_num_type_error:
+      errormsg: "The station name must be an string."
+      execute: "query_station_num(None)"

@@ -142,6 +142,14 @@ def test_query_value_error(data):
         with pytest.raises(ValueError, match=properties["errormsg"]):
             exec(properties["execute"])
 
+@pytest.mark.parametrize("data", [(fixture[16]),(fixture[17]),(fixture[18])])
+def test_query_type_error(data):
+    with patch.object(requests, "get") as mock_get:
+        properties = list(data.values())[0]
+        mock_get.return_value.status_code = 201
+        with pytest.raises(TypeError, match=properties["errormsg"]):
+            exec(properties["execute"])
+
 
 # def test_requests():
 #     with patch.object(requests, "get") as mock_get:
